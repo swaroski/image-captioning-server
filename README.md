@@ -26,6 +26,40 @@ This project provides a **containerized FastAPI server** for image captioning us
 
 ## 🚀 Setup
 
+## ⚙️ Local Python Environment (Optional, for Notebook)
+If you prefer to run the notebook in a local Python environment (rather than just Docker), you can create a virtual environment and install dependencies easily. 
+
+### Option 1: Using uv (modern Python environment manager)
+
+```bash
+# Create a new virtual environment with uv
+uv venv
+
+# Activate it
+source .venv/bin/activate
+
+# Install dependencies from requirements.txt
+uv pip install -r requirements.txt
+
+# Install additional dependencies for the notebook
+uv pip install aiohttp jupyter
+```
+
+### Option 2: Using python -m venv (standard)
+```bash
+# Create a virtual environment
+python -m venv .venv
+
+# Activate it
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dependencies from requirements.txt
+pip install -r requirements.txt
+
+# Install additional dependencies for the notebook
+pip install aiohttp jupyter
+```
+
 ### Clone the Repository
 
 ```bash
@@ -45,6 +79,24 @@ docker run -p 80:80 image-captioning-server
 
 The server will be available at http://localhost:80
 
+
+## ⚙️ Local Python Environment (Optional, for Notebook)
+### Using uv
+```bash
+uv venv
+source .venv/bin/activate
+uv pip install -r requirements.txt
+uv pip install aiohttp jupyter
+```
+
+### Or using venv
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+pip install aiohttp jupyter
+```
+
 ## 🧪 Testing with the Notebook
 ### Install Dependencies
 ```bash
@@ -54,17 +106,24 @@ Place JPEG/PNG images (e.g., dog.png, family.png, surf.jpg) in an images/ direct
 ```
 
 ### Run the Notebook
-``bash
+```bash
 jupyter notebook demo_notebook.ipynb
 ```
 
 Execute the cell to send parallel POST requests to http://localhost:80/caption.
 The notebook will print captions for each image, e.g.:
 
-``bash
-Image: images/dog.png, Caption: A dog sitting in the grass with its tongue out
-Image: images/family.png, Caption: A family laughing in the park
-Image: images/surf.jpg, Caption: A surfer riding a wave
+```bash
+Image: images/elephant.jpg, Caption: the elephant is wet
+Image: images/bananas.jpg, Caption: a bunch of bananas
+Image: images/spoons.jpg, Caption: a wooden table with a bunch of wooden spoons
+Image: images/cycling.jpg, Caption: a man riding a bike
+Image: images/cherry_blossom.jpg, Caption: people are gathered around a blue table covered in pink flowers
+Image: images/dog.png, Caption: a dog sitting in the grass with its tongue out
+Image: images/surf.jpg, Caption: a man riding a wave on a surfboard
+Image: images/bike.jpg, Caption: a motorcycle parked in the dirt
+Image: images/family.png, Caption: a group of people are smiling and posing for a picture
+Image: images/boy_eating_burger.jpg, Caption: a boy eating a piece of pizza
 ```
 
 
