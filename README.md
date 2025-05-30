@@ -1,0 +1,98 @@
+# Image Captioning Server
+
+This project provides a **containerized FastAPI server** for image captioning using the `Salesforce/blip-image-captioning-base` model from Hugging Face. It leverages **NGINX, Gunicorn, and Uvicorn** to handle multiple parallel requests efficiently. A **Jupyter notebook** demonstrates sending parallel POST requests to the server.
+
+---
+
+## 🗂️ Repository Structure
+
+- **app/main.py**: FastAPI application for loading the model and serving the `/caption` endpoint.  
+- **Dockerfile**: Multi-stage Dockerfile for building the container.  
+- **nginx.conf**: NGINX configuration for reverse proxying to Gunicorn.  
+- **requirements.txt**: Python dependencies.  
+- **demo_notebook.ipynb**: Jupyter notebook for testing parallel requests.  
+- **start.sh**: Entry script to start both NGINX and Gunicorn.
+
+---
+
+## ⚙️ Prerequisites
+
+- Docker  
+- Python 3.10+ (for running the notebook)  
+- Jupyter (for running the notebook)  
+- Sample images (JPEG/PNG format) for testing  
+
+---
+
+## 🚀 Setup
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/swaroski/image-captioning-server.git 
+cd image-captioning-server
+```
+
+## Build the Docker Image
+```bash
+docker build -t image-captioning-server .
+```
+
+## Run the Container
+```bash
+docker run -p 80:80 image-captioning-server
+```
+
+The server will be available at http://localhost:80
+
+## 🧪 Testing with the Notebook
+### Install Dependencies
+```bash
+pip install aiohttp jupyter 
+Prepare Sample Images
+Place JPEG/PNG images (e.g., dog.png, family.png, surf.jpg) in an images/ directory or alongside the notebook.
+```
+
+### Run the Notebook
+``bash
+jupyter notebook demo_notebook.ipynb
+```
+
+Execute the cell to send parallel POST requests to http://localhost:80/caption.
+The notebook will print captions for each image, e.g.:
+
+``bash
+Image: images/dog.png, Caption: A dog sitting in the grass with its tongue out
+Image: images/family.png, Caption: A family laughing in the park
+Image: images/surf.jpg, Caption: A surfer riding a wave
+```
+
+
+## 🖥️ API Endpoint
+
+```bash
+POST /caption
+```
+- Request: Form-data with key file and an image (JPEG/PNG).
+
+- Response: JSON with a caption field, e.g.:
+
+```bash
+{"caption": "A dog sitting in the grass with its tongue out"}
+```
+
+## 📝 Notes
+- The server uses 8 Gunicorn workers for concurrent request handling.
+
+- The **Salesforce/blip-image-captioning-base** model runs on GPU if available, otherwise CPU.
+
+- Logs are available in /var/log/nginx/ inside the container for debugging.
+
+- NGINX config allows uploads up to 10 MB (client_max_body_size).
+
+💡 Model Choice
+I chose the **Salesforce/blip-image-captioning-base** model because:
+
+✅ It’s lightweight (~350MB) — faster startup and efficient memory use.
+✅ Provides accurate image captions for a wide range of images.
+✅ Well-suited for a demonstration of containerized AI inference.
