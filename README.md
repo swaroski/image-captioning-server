@@ -155,3 +155,21 @@ I chose the **Salesforce/blip-image-captioning-base** model because:
 ✅ It’s lightweight (~350MB) — faster startup and efficient memory use.
 ✅ Provides accurate image captions for a wide range of images.
 ✅ Well-suited for a demonstration of containerized AI inference.
+
+
+🔥 📝 Performance Notes
+During testing, I observed that semaphore=2 in the notebook (max 2 concurrent client requests) consistently gave the best performance — even when the server had 6 Gunicorn workers.
+
+This might seem surprising, but it reflects real-world performance factors:
+
+Each image captioning request is CPU and memory intensive.
+
+More than 2 simultaneous heavy requests cause CPU cache pressure and context-switching overhead, which slows down overall throughput.
+
+This demonstrates that the fastest concurrency setting is often lower than the number of CPU cores for CPU-heavy workloads.
+
+Takeaway:
+
+More concurrency ≠ more speed.
+
+The best concurrency is usually the sweet spot that matches your hardware and workload.

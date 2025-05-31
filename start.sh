@@ -4,4 +4,4 @@
 nginx &
 
 # Start Gunicorn in foreground
-gunicorn -w 8 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000
+gunicorn -w 6 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000
