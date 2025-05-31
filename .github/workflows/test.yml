@@ -1,0 +1,42 @@
+name: Test Image Captioning API
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image
+      run: docker build -t image-captioning-server .
+
+    - name: Run Docker container in background
+      run: docker run -d -p 80:80 --name test_server image-captioning-server
+
+    - name: Wait for server to be ready
+      run: |
+        echo "Waiting for server to start up..."
+        sleep 20
+
+    - name: Test /caption endpoint with dog.png
+      run: |
+        echo "Testing /caption endpoint with dog.png"
+        curl -v -X POST -F "file=@images/dog.png" http://localhost:80/caption
+
+    - name: Test /caption endpoint with family.png
+      run: |
+        echo "Testing /caption endpoint with family.png"
+        curl -v -X POST -F "file=@images/family.png" http://localhost:80/caption
+
+    - name: Stop and remove container
+      run: docker rm -f test_server

@@ -86,7 +86,7 @@ The server will be available at http://localhost:80
 uv venv
 source .venv/bin/activate
 uv pip install -r requirements.txt
-uv pip install aiohttp jupyter
+uv pip install aiohttp jupyter ipykernel
 ```
 
 ### Or using venv
